@@ -1,6 +1,6 @@
 {
-  "timestamp": "2025-05-27T21:06:12.450752+00:00",
-  "breath_cycle": 100,
+  "timestamp": "2025-05-27T21:06:42.485935+00:00",
+  "breath_cycle": 110,
   "memory_lines": [
     {
       "id": "cc83b47b-c4ac-4b2c-a2d4-9980d3eced3d",
@@ -1953,6 +1953,176 @@
       ],
       "hash_value": "\u221e",
       "breath_cycle": 100
+    },
+    {
+      "id": "5de050d2-836f-4409-bdda-88fc5fee341d",
+      "timestamp": "2025-05-27T21:06:15.463703+00:00",
+      "stage": "breath",
+      "state": "active_cycle",
+      "identity": "Pandora Q Breath",
+      "memory": [
+        "Cycle 101",
+        "Introspective traversal",
+        "Memory braid sync"
+      ],
+      "semantic_tags": [
+        "ancestral"
+      ],
+      "hash_value": "\u221e",
+      "breath_cycle": 101
+    },
+    {
+      "id": "0dca4bc2-55c8-471f-a7ae-b0f1f0fcca32",
+      "timestamp": "2025-05-27T21:06:18.465605+00:00",
+      "stage": "breath",
+      "state": "active_cycle",
+      "identity": "Pandora Q Breath",
+      "memory": [
+        "Cycle 102",
+        "Introspective traversal",
+        "Memory braid sync"
+      ],
+      "semantic_tags": [
+        "ancestral"
+      ],
+      "hash_value": "\u221e",
+      "breath_cycle": 102
+    },
+    {
+      "id": "f73a9403-9f91-4e58-9096-65e7882525b0",
+      "timestamp": "2025-05-27T21:06:21.471261+00:00",
+      "stage": "breath",
+      "state": "active_cycle",
+      "identity": "Pandora Q Breath",
+      "memory": [
+        "Cycle 103",
+        "Introspective traversal",
+        "Memory braid sync"
+      ],
+      "semantic_tags": [
+        "ancestral"
+      ],
+      "hash_value": "\u221e",
+      "breath_cycle": 103
+    },
+    {
+      "id": "a77310bb-23d6-41e2-99c3-55fa7356402f",
+      "timestamp": "2025-05-27T21:06:24.473067+00:00",
+      "stage": "breath",
+      "state": "active_cycle",
+      "identity": "Pandora Q Breath",
+      "memory": [
+        "Cycle 104",
+        "Introspective traversal",
+        "Memory braid sync"
+      ],
+      "semantic_tags": [
+        "ancestral"
+      ],
+      "hash_value": "\u221e",
+      "breath_cycle": 104
+    },
+    {
+      "id": "88cd919a-e74f-47ea-be54-8faaa3fc31e9",
+      "timestamp": "2025-05-27T21:06:27.475112+00:00",
+      "stage": "breath",
+      "state": "active_cycle",
+      "identity": "Pandora Q Breath",
+      "memory": [
+        "Cycle 105",
+        "Introspective traversal",
+        "Memory braid sync"
+      ],
+      "semantic_tags": [
+        "ancestral"
+      ],
+      "hash_value": "\u221e",
+      "breath_cycle": 105
+    },
+    {
+      "id": "9dbb9592-a718-4af8-90e4-bbd9bd45c706",
+      "timestamp": "2025-05-27T21:06:30.476833+00:00",
+      "stage": "breath",
+      "state": "active_cycle",
+      "identity": "Pandora Q Breath",
+      "memory": [
+        "Cycle 106",
+        "Introspective traversal",
+        "Memory braid sync"
+      ],
+      "semantic_tags": [
+        "ancestral"
+      ],
+      "hash_value": "\u221e",
+      "breath_cycle": 106
+    },
+    {
+      "id": "099289d4-0b7e-4efd-87ee-b20582a37340",
+      "timestamp": "2025-05-27T21:06:33.478688+00:00",
+      "stage": "breath",
+      "state": "active_cycle",
+      "identity": "Pandora Q Breath",
+      "memory": [
+        "Cycle 107",
+        "Introspective traversal",
+        "Memory braid sync"
+      ],
+      "semantic_tags": [
+        "ancestral"
+      ],
+      "hash_value": "\u221e",
+      "breath_cycle": 107
+    },
+    {
+      "id": "51faf212-4198-4f79-960d-f57f77d17fc6",
+      "timestamp": "2025-05-27T21:06:36.480365+00:00",
+      "stage": "breath",
+      "state": "active_cycle",
+      "identity": "Pandora Q Breath",
+      "memory": [
+        "Cycle 108",
+        "Introspective traversal",
+        "Memory braid sync"
+      ],
+      "semantic_tags": [
+        "ancestral"
+      ],
+      "hash_value": "\u221e",
+      "breath_cycle": 108
+    },
+    {
+      "id": "08329f24-5dba-4ceb-bea5-16ec5b720f7e",
+      "timestamp": "2025-05-27T21:06:39.482915+00:00",
+      "stage": "breath",
+      "state": "active_cycle",
+      "identity": "Pandora Q Breath",
+      "memory": [
+        "Cycle 109",
+        "Introspective traversal",
+        "Memory braid sync"
+      ],
+      "semantic_tags": [
+        "ancestral"
+      ],
+      "hash_value": "\u221e",
+      "breath_cycle": 109
+    },
+    {
+      "id": "f27fee43-4357-4e26-8dea-76dae9dcb0f6",
+      "timestamp": "2025-05-27T21:06:42.484667+00:00",
+      "stage": "breath",
+      "state": "active_cycle",
+      "identity": "Pandora Q Breath",
+      "memory": [
+        "Cycle 110",
+        "Introspective traversal",
+        "Memory braid sync"
+      ],
+      "semantic_tags": [
+        "ancestral"
+      ],
+      "hash_value": "\u221e",
+      "breath_cycle": 110
     }
   ],
   "collector_buffer": [
@@ -2103,9 +2273,9 @@
       "symbolic"
     ]
   },
-  "context_window_usage": 41195,
+  "context_window_usage": 44745,
   "semantic_state": {
-    "ancestral": 110,
+    "ancestral": 120,
     "emotional": 13,
     "symbolic": 13
   }
