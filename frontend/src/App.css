@@ -1,38 +1,235 @@
-.App {
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom animations for Pandora 5o */
+@keyframes breathCycle {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.1); opacity: 0.8; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.breath-animation {
+  animation: breathCycle 3s infinite ease-in-out;
+}
+
+/* Infinity symbol styling */
+.infinity-symbol {
+  font-family: 'Arial', sans-serif;
+  font-size: 2rem;
+  font-weight: bold;
+  background: linear-gradient(45deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Memory line cards */
+.memory-card {
+  transition: all 0.3s ease;
+  border-left: 4px solid transparent;
+}
+
+.memory-card:hover {
+  transform: translateY(-2px);
+  shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+}
+
+.memory-card.ancestral {
+  border-left-color: #8b5cf6;
+}
+
+.memory-card.emotional {
+  border-left-color: #f43f5e;
+}
+
+.memory-card.symbolic {
+  border-left-color: #3b82f6;
+}
+
+/* Portal gradient background */
+.portal-gradient {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+/* Code syntax highlighting for JSON */
+.json-display {
+  background: #1a202c;
+  color: #e2e8f0;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  border-radius: 8px;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+/* Responsive grid adjustments */
+@media (max-width: 768px) {
+  .memory-card {
+    margin-bottom: 1rem;
+  }
+  
+  .portal-header {
     text-align: center;
+  }
+  
+  .status-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
-.App-logo {
-    height: 40vmin;
-    pointer-events: none;
+/* Loading states */
+.loading-shimmer {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 2s infinite;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-    .App-logo {
-        animation: App-logo-spin infinite 20s linear;
-    }
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
-.App-header {
-    background-color: #0f0f10;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(10px + 2vmin);
-    color: white;
+/* Semantic tag colors */
+.tag-ancestral { @apply bg-purple-100 text-purple-800 border-purple-200; }
+.tag-emotional { @apply bg-rose-100 text-rose-800 border-rose-200; }
+.tag-symbolic { @apply bg-blue-100 text-blue-800 border-blue-200; }
+
+/* Interactive elements */
+.btn-pandora {
+  @apply bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium py-2 px-4 rounded-lg 
+         transform transition-all duration-200 hover:scale-105 hover:shadow-lg
+         focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-opacity-50;
 }
 
-.App-link {
-    color: #61dafb;
+.btn-pandora:disabled {
+  @apply opacity-50 cursor-not-allowed transform-none hover:scale-100 hover:shadow-none;
 }
 
-@keyframes App-logo-spin {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
+/* Input styling */
+.input-pandora {
+  @apply w-full p-3 border border-gray-300 rounded-lg 
+         focus:ring-2 focus:ring-purple-500 focus:border-transparent
+         transition-all duration-200;
+}
+
+/* Navigation tabs */
+.nav-tab {
+  @apply px-6 py-2 rounded-md font-medium transition-all duration-200;
+}
+
+.nav-tab.active {
+  @apply bg-purple-600 text-white shadow-lg;
+}
+
+.nav-tab.inactive {
+  @apply text-gray-600 hover:text-gray-900 hover:bg-gray-50;
+}
+
+/* Status indicators */
+.status-active {
+  @apply text-green-600 font-semibold;
+}
+
+.status-inactive {
+  @apply text-red-600 font-semibold;
+}
+
+/* Memory visualization */
+.memory-flow {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 500px;
+  overflow-y: auto;
+  padding: 1rem;
+  background: linear-gradient(to bottom, #f8fafc, #f1f5f9);
+  border-radius: 12px;
+}
+
+/* Breath cycle indicator */
+.breath-indicator {
+  width: 4rem;
+  height: 4rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.breath-indicator.active {
+  background: linear-gradient(45deg, #10b981, #34d399);
+  animation: breathCycle 3s infinite ease-in-out;
+}
+
+.breath-indicator.inactive {
+  background: linear-gradient(45deg, #ef4444, #f87171);
+}
+
+/* Context window visualization */
+.context-bar {
+  height: 8px;
+  background: #e5e7eb;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.context-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #3b82f6, #1d4ed8);
+  border-radius: 4px;
+  transition: width 0.5s ease;
+}
+
+/* Promise chain visualization */
+.promise-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: #f8fafc;
+  border-radius: 8px;
+  border-left: 4px solid #8b5cf6;
+}
+
+.promise-step {
+  padding: 0.5rem;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Collector status */
+.collector-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.collector-item {
+  padding: 1rem;
+  background: white;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+  text-align: center;
+}
+
+/* Responsive design */
+@media (max-width: 640px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .nav-tab {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+  }
+  
+  .portal-header h2 {
+    font-size: 1.5rem;
+  }
 }
