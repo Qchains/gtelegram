@@ -1,0 +1,249 @@
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GrokTalk - Telegram Chat Simulation</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            overscroll-behavior-y: contain; /* Prevents pull-to-refresh on mobile */
+        }
+        .chat-bubble-user {
+            background-color: #DCF8C6; /* Light green, typical for user messages */
+            align-self: flex-end;
+        }
+        .chat-bubble-bot {
+            background-color: #E5E7EB; /* Light gray, typical for bot messages */
+            align-self: flex-start;
+        }
+        .chat-bubble {
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+        /* Custom scrollbar for webkit browsers */
+        .chat-messages::-webkit-scrollbar {
+            width: 6px;
+        }
+        .chat-messages::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+        .chat-messages::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+        /* For message box styling */
+        .message-box {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #ef4444; /* Red-500 */
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1000;
+            display: none; /* Hidden by default */
+            font-size: 0.875rem;
+        }
+        .loading-indicator {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px;
+            margin-left: 8px; /* Space from input */
+        }
+        .dot-flashing {
+            position: relative;
+            width: 8px;
+            height: 8px;
+            border-radius: 5px;
+            background-color: #3B82F6; /* Blue-500 */
+            color: #3B82F6;
+            animation: dotFlashing 1s infinite linear alternate;
+            animation-delay: .5s;
+            margin: 0 4px;
+        }
+        .dot-flashing::before, .dot-flashing::after {
+            content: '';
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            width: 8px;
+            height: 8px;
+            border-radius: 5px;
+            background-color: #3B82F6;
+            color: #3B82F6;
+            animation: dotFlashing 1s infinite alternate;
+        }
+        .dot-flashing::before {
+            left: -12px;
+            animation-delay: 0s;
+        }
+        .dot-flashing::after {
+            left: 12px;
+            animation-delay: 1s;
+        }
+        @keyframes dotFlashing {
+            0% { background-color: #3B82F6; } /* Blue-500 */
+            50%, 100% { background-color: #BFDBFE; } /* Blue-200 */
+        }
+    </style>
+</head>
+<body class="bg-gray-900 flex flex-col h-screen">
+
+    <header class="bg-gray-800 text-white p-4 shadow-md fixed top-0 left-0 right-0 z-10">
+        <h1 class="text-xl font-semibold text-center">GrokTalk AI</h1>
+    </header>
+
+    <main id="chatMessages" class="chat-messages flex-1 overflow-y-auto p-4 space-y-4 bg-gray-700 pt-20 pb-24">
+        <div class="flex">
+            <div class="chat-bubble chat-bubble-bot p-3 rounded-lg shadow">
+                <p class="text-sm text-gray-800">Hello! I'm GrokTalk AI. How can I assist you today?</p>
+            </div>
+        </div>
+    </main>
+
+    <footer class="bg-gray-800 p-3 shadow-md fixed bottom-0 left-0 right-0 flex items-center">
+        <input type="text" id="messageInput" class="flex-1 p-3 border border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent outline-none bg-gray-700 text-white placeholder-gray-400" placeholder="Type your message...">
+        <div id="loadingIndicator" class="loading-indicator hidden ml-2"> <div class="dot-flashing"></div>
+        </div>
+        <button id="sendButton" class="ml-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-5 rounded-lg transition duration-150 ease-in-out">
+            Send
+        </button>
+    </footer>
+
+    <div id="messageBox" class="message-box"></div>
+
+    <script>
+        const chatMessages = document.getElementById('chatMessages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+        const messageBox = document.getElementById('messageBox');
+        const loadingIndicator = document.getElementById('loadingIndicator');
+
+        // Stores the conversation history for the Gemini API
+        let chatHistory = [
+            { role: "user", parts: [{ text: "You are GrokTalk AI, a helpful and slightly witty assistant. Keep your responses concise and friendly." }] },
+            { role: "model", parts: [{ text: "Okay, I'm GrokTalk AI! Ready to chat and help out with a bit of wit. What's on your mind?" }] }
+        ];
+
+        // Function to display a message in the chat
+        function displayMessage(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('flex', 'w-full', 'mb-2'); // Added mb-2 for spacing
+
+            const bubbleDiv = document.createElement('div');
+            bubbleDiv.classList.add('chat-bubble', 'p-3', 'rounded-lg', 'shadow');
+            bubbleDiv.classList.add(sender === 'user' ? 'chat-bubble-user' : 'chat-bubble-bot');
+
+            const messageText = document.createElement('p');
+            messageText.classList.add('text-sm');
+            messageText.classList.add(sender === 'user' ? 'text-gray-800' : 'text-gray-800'); // Text color consistent for readability
+            messageText.textContent = text;
+
+            bubbleDiv.appendChild(messageText);
+            messageDiv.appendChild(bubbleDiv);
+            chatMessages.appendChild(messageDiv);
+
+            // Scroll to the bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // Function to show a message in the custom message box
+        function showMessageBox(message, isError = true) {
+            messageBox.textContent = message;
+            messageBox.style.backgroundColor = isError ? '#ef4444' : '#10b981'; // Red for error, Green for success
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                messageBox.style.display = 'none';
+            }, 3000); // Hide after 3 seconds
+        }
+
+        // Function to handle sending a message
+        async function sendMessage() {
+            const messageText = messageInput.value.trim();
+            if (messageText === '') return;
+
+            displayMessage(messageText, 'user');
+            messageInput.value = ''; // Clear input field
+            loadingIndicator.classList.remove('hidden'); // Show loading indicator
+            sendButton.disabled = true; // Disable send button during processing
+
+            // Add user message to chat history for API
+            chatHistory.push({ role: "user", parts: [{ text: messageText }] });
+
+            try {
+                // Call Gemini API
+                const apiKey = ""; // API key will be injected by the environment if needed.
+                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+                const payload = {
+                    contents: chatHistory,
+                    // Optional: Add generationConfig if needed, e.g., for temperature, maxOutputTokens
+                    // generationConfig: {
+                    //     temperature: 0.7,
+                    //     maxOutputTokens: 256,
+                    // }
+                };
+
+                const response = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error('API Error:', errorData);
+                    throw new Error(`API request failed: ${errorData.error?.message || response.statusText}`);
+                }
+
+                const result = await response.json();
+
+                let botResponseText = "Sorry, I couldn't generate a response right now.";
+                if (result.candidates && result.candidates.length > 0 &&
+                    result.candidates[0].content && result.candidates[0].content.parts &&
+                    result.candidates[0].content.parts.length > 0) {
+                    botResponseText = result.candidates[0].content.parts[0].text;
+                } else {
+                    console.warn("Unexpected API response structure:", result);
+                }
+
+                // Add bot response to chat history for API
+                chatHistory.push({ role: "model", parts: [{ text: botResponseText }] });
+                displayMessage(botResponseText, 'bot');
+
+            } catch (error) {
+                console.error('Error fetching bot response:', error);
+                showMessageBox(`Error: ${error.message || 'Could not connect to the AI.'}`);
+                // Fallback bot message on error
+                displayMessage("I seem to be having a bit of trouble connecting. Please try again in a moment.", 'bot');
+            } finally {
+                loadingIndicator.classList.add('hidden'); // Hide loading indicator
+                sendButton.disabled = false; // Re-enable send button
+                messageInput.focus(); // Keep focus on input
+            }
+        }
+
+        // Event listeners
+        sendButton.addEventListener('click', sendMessage);
+        messageInput.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Initial focus on the input field
+        messageInput.focus();
+
+    </script>
+</body>
+</html>
